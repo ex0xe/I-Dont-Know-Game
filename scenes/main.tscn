@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmquorj3x0kc"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_2aqaa"]
+
+[node name="Main" type="Node2D"]
+position = Vector2(117, 408)
+script = ExtResource("1_2aqaa")
+
+[node name="Start" type="Button" parent="."]
+offset_left = 364.0
+offset_top = -104.0
+offset_right = 570.0
+offset_bottom = -46.0
+text = "Start"
+
+[node name="Options" type="Button" parent="."]
+offset_left = 364.0
+offset_top = -12.0
+offset_right = 570.0
+offset_bottom = 46.0
+text = "Options"
+
+[node name="Quit" type="Button" parent="."]
+offset_left = 365.0
+offset_top = 82.0
+offset_right = 571.0
+offset_bottom = 140.0
+text = "Quit"
+
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

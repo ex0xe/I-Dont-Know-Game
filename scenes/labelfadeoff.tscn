@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://o0du4hkrr0fw"]
+
+[ext_resource type="FontFile" uid="uid://ccpcrc2yary4d" path="res://Kaph_Font_1_10/TrueType (.ttf)/Kaph-Regular.ttf" id="1_e67rn"]
+
+[sub_resource type="Animation" id="Animation_g568g"]
+resource_name = "FadeOut"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_twtbj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_603pm"]
+_data = {
+"FadeOut": SubResource("Animation_g568g"),
+"RESET": SubResource("Animation_twtbj")
+}
+
+[node name="LabelFadeOff" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("1_e67rn")
+text = "abc"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_603pm")
+}
