@@ -1,5 +1,9 @@
 extends CharacterBody2D
 
+var enemy_inattack_range = false
+var enemy_attack_cooldown = true
+var health = 100
+var player_alive = true
 
 @export var speed: float = 300
 @export var accel: float = 30
@@ -8,33 +12,12 @@ extends CharacterBody2D
 @onready var sprite = $Character
 @onready var previousDirection: String = "down"
 
-
-#var is_touching_border = false
 var is_attacking = false
 
 #BUG:
 #Sprite moves a bit up when walking right or left (noticeable with keyboard)
 #When attacking, only attacking animation will be played, not walking aniamtion
 
-#func
-#func border_collision():
-	#var touching_border = false
-#
-	#for i in range(get_slide_collision_count()):
-		#var collision = get_slide_collision(i)
-		#var collider = collision.get_collider()
-		#if collider and collider is StaticBody2D: # Check if colliding with StaticBody2D
-			#touching_border = true
-			#break # No need to check further collisions
-#
-	#if touching_border:
-		## Play the animation only if it's not already playing
-		#if animations.current_animation != "idle_" + previousDirection:
-			#animations.play("idle_" + previousDirection)
-	#else:
-		## Optionally, stop the animation or switch to another if not touching the border
-		#if animations.current_animation == "idle_"  + previousDirection:
-			#animations.stop() # Or play another animation
 
 func handle_input():
 	var move_direction: Vector2 = Input.get_vector("left", "right", "up", "down")
@@ -43,6 +26,7 @@ func handle_input():
 	velocity.x = move_toward(velocity.x, speed * move_direction.x, accel)
 	velocity.y = move_toward(velocity.y, speed * move_direction.y, accel)
 	if Input.is_action_just_pressed("attack") and not is_attacking:
+		Global.player_current_attack = true
 		attack()
 	
 func attack():
@@ -60,14 +44,6 @@ func update_animation():
 	var direction = "down"	
 	var threshold: float = 0.01  # A small threshold to account for minor inaccuracies
 
-	
-	#if abs(velocity.x) > threshold and abs(velocity.x) > abs(velocity.y):
-		#if velocity.x < 0:
-			##direction = "right"
-			#sprite.flip_h = true
-		#else:
-			#direction = "right"
-			#sprite.flip_h = false
 	if abs(velocity.x) > threshold and abs(velocity.x) > abs(velocity.y):
 		direction = "side"  # Keep the direction as "right" for both left and right movements
 		sprite.flip_h = velocity.x < 0
@@ -87,27 +63,40 @@ func update_animation():
 
 func _physics_process(delta):
 	
-	#border_collision()
+	enemy_attack()
 	handle_input()
 	move_and_slide()
 	update_animation()
 	
-	
+	if health <= 0:
+		player_alive = false # player dies, reponse needed
+		health = 0
+		print("player has been killed")
+		self.queue_free()
+		
+		
+func player():
+	pass
 
-#const speed = 100
-#var current_dir = "none"
-#
-#func _ready():
-	#$Character/AnimationPlayer.play("idle_down")
-	#
-	#
-#func _physics_process(delta):
-	#player_movement(delta)
-	#
-#func player_movement(delta):
-	#
-	#if Input.is_action_pressed("right"):
-		#current_dir = "right"
-		#play_anim(1)
-		#velocity.x = speed
-		#velocity.y = 0
+
+func _on_player_hitbox_body_entered(body):
+		if body.has_method("enemy"):
+			enemy_inattack_range = true
+
+
+func _on_player_hitbox_body_exited(body):
+		if body.has_method("enemy"):
+			enemy_inattack_range = false
+	
+		
+		
+func enemy_attack():
+	if enemy_inattack_range and enemy_attack_cooldown == true:
+		health = health - 20
+		enemy_attack_cooldown = false
+		$attack_cooldown.start()
+		print(health)
+
+
+func _on_attack_cooldown_timeout():
+	enemy_attack_cooldown = true
