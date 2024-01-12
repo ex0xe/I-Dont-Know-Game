@@ -17,12 +17,8 @@ func _physics_process(delta):
 	deal_with_damage()
 	
 	if player_chase:
-		#velocity = position.direction_to(player.position) * speed
-		#move_and_slide()
-		
 		position += (player.position - position).normalized() * speed * delta
 		move_and_collide(Vector2(0,0))
-		#move_and_slide()
 		
 		sprite.play("walk")
 		
@@ -44,22 +40,21 @@ func _on_detection_area_body_exited(body):
 	player_chase = false
 
 
-
-
-func _on_enemy_hitbox_body_entered(body):
-	if body.has_method("player"):
-		player_inattack_zone = true
-
-
-func _on_enemy_hitbox_body_exited(body):
-	if body.has_method("player"):
-		player_inattack_zone = false
+#func _on_enemy_hitbox_body_entered(body):
+	#
+	#if body.has_method("player") and body.get_node("player_attackbox"):
+		#player_inattack_zone = true
+#
+#
+#func _on_enemy_hitbox_body_exited(body):
+	#if body.has_method("player") and body.get_node("player_attackbox"):
+		#player_inattack_zone = false
 		
 		
 func deal_with_damage():
-	if player_inattack_zone and Global.player_current_attack == true:
+	if Global.player_attackbox_touching_enemy and Global.player_current_attack == true:
 		if can_take_damage == true:
-			#print(can_take_damage, player_inattack_zone, Global.player_current_attack)
+			print(can_take_damage, Global.player_attackbox_touching_enemy, Global.player_current_attack)
 			health = health - 20
 			$take_damage_cooldown.start()
 			can_take_damage = false
@@ -71,3 +66,13 @@ func deal_with_damage():
 
 func _on_take_damage_cooldown_timeout():
 	can_take_damage = true
+
+
+func _on_enemy_hitbox_area_entered(area):
+	if area.has_node("attackbox"):
+		Global.player_attackbox_touching_enemy = true
+
+
+func _on_enemy_hitbox_area_exited(area):
+	if area.has_node("attackbox"):
+		Global.player_attackbox_touching_enemy = false

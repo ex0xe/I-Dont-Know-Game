@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://1srcxnldkb08" path="res://sprites/objects/objects.png" id="5_optpu"]
 [ext_resource type="PackedScene" uid="uid://o0du4hkrr0fw" path="res://scenes/labelfadeoff.tscn" id="6_kbp4u"]
 [ext_resource type="Script" path="res://scripts/StaticBody2Dk.gd" id="8_pkpch"]
-[ext_resource type="PackedScene" uid="uid://c7j8fw06dum33" path="res://scripts/enemy.tscn" id="9_jiepx"]
+[ext_resource type="PackedScene" uid="uid://c7j8fw06dum33" path="res://scenes/enemy.tscn" id="9_jiepx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h5vlk"]
 texture = ExtResource("3_g63n6")

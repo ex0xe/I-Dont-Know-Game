@@ -5,6 +5,8 @@ var enemy_attack_cooldown = true
 var health = 100
 var player_alive = true
 
+
+
 @export var speed: float = 300
 @export var accel: float = 30
 
@@ -26,7 +28,8 @@ func handle_input():
 	velocity.x = move_toward(velocity.x, speed * move_direction.x, accel)
 	velocity.y = move_toward(velocity.y, speed * move_direction.y, accel)
 	if Input.is_action_just_pressed("attack") and not is_attacking:
-		Global.player_current_attack = true
+		if Global.player_attackbox_touching_enemy == true:
+			Global.player_current_attack = true
 		attack()
 	
 func attack():
@@ -87,8 +90,7 @@ func _on_player_hitbox_body_entered(body):
 func _on_player_hitbox_body_exited(body):
 		if body.has_method("enemy"):
 			enemy_inattack_range = false
-	
-		
+			
 		
 func enemy_attack():
 	if enemy_inattack_range and enemy_attack_cooldown == true:
@@ -100,3 +102,10 @@ func enemy_attack():
 
 func _on_attack_cooldown_timeout():
 	enemy_attack_cooldown = true
+
+
+
+func _on_deal_attack_timer_timeout():
+	$deal_attack_timer.stop()
+	Global.player_current_attack = false
+	is_attacking = false
