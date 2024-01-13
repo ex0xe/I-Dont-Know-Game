@@ -19,6 +19,9 @@ var player_alive = true
 @onready var attackbox_side = $player_attackbox/attackbox_side
 @onready var attackbox_updown = $player_attackbox/attackbox_updown
 @onready var attackbox = $player_attackbox
+#attackbox.get_node("attackbox_updown").disabled = false
+#attackbox.get_node("attackbox_side").disabled = true
+#attackbox.scale.y = -1
 
 var is_attacking = false
 
@@ -49,21 +52,22 @@ func update_animation():
 	if is_attacking:
 		return
 		
-	var direction = "down"	
+	var direction = "down"
+	#attackbox.get_node("attackbox_updown").disabled = false
+	#attackbox.get_node("attackbox_side").disabled = true
+	#attackbox.scale.y = -1
 	var threshold: float = 0.01  # A small threshold to account for minor inaccuracies
 
 	if abs(velocity.x) > threshold and abs(velocity.x) > abs(velocity.y):
 		if velocity.x < 0:
-			#attackbox_updown.disabled = true
 			attackbox.get_node("attackbox_updown").disabled = true
 			attackbox.get_node("attackbox_side").disabled = false
-			direction = "side"  # Keep the direction as "right" for both left and right movements
+			direction = "side"  
 			sprite.flip_h = true
 			attackbox.scale.x = -1
 		else:
 			attackbox.get_node("attackbox_updown").disabled = true
 			attackbox.get_node("attackbox_side").disabled = false
-			#attackbox_updown.disabled = true
 			direction = "side"
 			sprite.flip_h = false
 			attackbox.scale.x = 1
@@ -137,9 +141,8 @@ func _on_deal_attack_timer_timeout():
 
 func update_health():
 	var healthbar = $healthbar
-	#print(healthbar.value)
 	healthbar.value = health
-	if health >= 100:
+	if health >= max_health:
 		healthbar.visible = false
 	else:
 		healthbar.visible = true

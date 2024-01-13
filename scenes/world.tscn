@@ -170,19 +170,19 @@ sources/2 = SubResource("TileSetAtlasSource_rw6fq")
 size = Vector2(1177.75, 31.3125)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ofbq"]
-size = Vector2(1177.75, 23.125)
+size = Vector2(814.875, 23.125)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gdf68"]
-size = Vector2(862.375, 25)
+size = Vector2(349.5, 25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x4tow"]
-size = Vector2(355.188, 25)
+size = Vector2(271.594, 25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ejg47"]
-size = Vector2(1177.75, 19.5313)
+size = Vector2(674.5, 19.5313)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ilvf"]
-size = Vector2(337.938, 18)
+size = Vector2(322, 20)
 
 [node name="StartingMap" type="Node2D"]
 y_sort_enabled = true
@@ -203,7 +203,7 @@ layer_1/z_index = -1
 layer_1/tile_data = PackedInt32Array()
 layer_2/name = "ysort"
 layer_2/y_sort_enabled = true
-layer_2/tile_data = PackedInt32Array(655370, 2, 5, 720906, 2, 6, 786442, 2, 7, 851978, 2, 8, 655371, 65538, 5, 786443, 65538, 7, 851979, 65538, 8, 655372, 131074, 5, 720908, 131074, 6, 786444, 131074, 7, 851980, 131074, 8, 720914, 2, 0, 720907, 65538, 6)
+layer_2/tile_data = PackedInt32Array(655370, 2, 5, 720906, 2, 6, 786442, 2, 7, 851978, 2, 8, 655371, 65538, 5, 786443, 65538, 7, 851979, 65538, 8, 655372, 131074, 5, 720908, 131074, 6, 786444, 131074, 7, 851980, 131074, 8, 720914, 2, 0, 720907, 65538, 6, 458788, 2, 5, -65487, 2, 5, 131110, 655362, 7, 262165, 655362, 7, -262137, 655362, 7, 1048577, 655362, 7, 1769492, 655362, 7, 1310735, 2, 1, 1048596, 524290, 6, 1114146, 524290, 6, 589874, 524290, 6, 1048598, 393218, 7, 524321, 393218, 7, 458750, 393218, 7, -327658, 393218, 7, 1703976, 393218, 7, 589843, 2, 1, -65525, 2, 1, -393217, 2, 1, 720902, 2, 5, 786432, 2, 5, 1769488, 524290, 6, 1507332, 393218, 7, 1769476, 393218, 7, 655381, 327682, 0, 327721, 327682, 0, 262148, 327682, 0, -393213, 327682, 0, -131065, 2, 5, 131115, 2, 5, 1507377, 2, 5, 1638429, 2, 5, -327644, 2, 5, 1638394, 2, 5, 851963, 524290, 6, 65531, 524290, 6, -458756, 524290, 6, -65522, 393218, 7, 393234, 393218, 7, 1376280, 393218, 7, 1114157, 393218, 7, 27, 393218, 7)
 script = ExtResource("4_2acvv")
 
 [node name="InteractionArea" parent="TileMap" instance=ExtResource("5_ewqug")]
@@ -225,34 +225,34 @@ text = ""
 position = Vector2(-107.5, -43)
 collision_mask = 1
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="border" type="StaticBody2D" parent="."]
 script = ExtResource("8_pkpch")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="border"]
 position = Vector2(433.5, -156.156)
 shape = SubResource("RectangleShape2D_vcv4w")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(824.5, 495)
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="border"]
+position = Vector2(643.063, 495)
 shape = SubResource("RectangleShape2D_3ofbq")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1022, 590.188)
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="border"]
+position = Vector2(1022, 333.75)
 rotation = 1.5708
 shape = SubResource("RectangleShape2D_gdf68")
 
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1022, -88.5)
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="border"]
+position = Vector2(1022, -46.703)
 rotation = 1.5708
 shape = SubResource("RectangleShape2D_x4tow")
 
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(-152.5, 15)
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="border"]
+position = Vector2(-152.499, 163.75)
 rotation = -1.5708
 shape = SubResource("RectangleShape2D_ejg47")
 
-[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(-18.9688, 492)
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="border"]
+position = Vector2(-10.9999, 493)
 shape = SubResource("RectangleShape2D_5ilvf")
 
 [node name="enemy" parent="." instance=ExtResource("9_jiepx")]

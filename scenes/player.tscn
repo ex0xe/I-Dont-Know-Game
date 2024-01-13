@@ -197,10 +197,10 @@ size = Vector2(12, 5)
 radius = 13.0384
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjodt"]
-size = Vector2(8, 16)
+size = Vector2(8, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p4rf8"]
-size = Vector2(20, 10)
+size = Vector2(24, 12)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 y_sort_enabled = true
@@ -215,7 +215,7 @@ texture = ExtResource("2_50cgh")
 offset = Vector2(0, -15)
 hframes = 6
 vframes = 10
-frame = 45
+frame = 36
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Character" groups=["player"]]
 libraries = {
@@ -252,7 +252,7 @@ position = Vector2(14, 0)
 shape = SubResource("RectangleShape2D_rjodt")
 
 [node name="attackbox_updown" type="CollisionShape2D" parent="player_attackbox"]
-position = Vector2(0, -9)
+position = Vector2(-2, -10)
 shape = SubResource("RectangleShape2D_p4rf8")
 
 [node name="deal_attack_timer" type="Timer" parent="."]

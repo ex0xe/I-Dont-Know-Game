@@ -4,8 +4,8 @@ var speed = 75
 var player_chase = false
 var player = null
 @onready var sprite = $AnimatedSprite2D
-
-var health = 60
+@export var max_health = 60
+var health = max_health
 var player_inattack_zone = false
 var can_take_damage = true
 
@@ -14,6 +14,7 @@ func enemy():
 	pass
 	
 func _physics_process(delta):
+	update_health()
 	deal_with_damage()
 	
 	if player_chase:
@@ -65,3 +66,14 @@ func _on_enemy_hitbox_area_entered(area):
 func _on_enemy_hitbox_area_exited(area):
 	if area.has_node("attackbox_side"):
 		Global.player_attackbox_touching_enemy = false
+		
+func update_health():
+	var healthbar = $healthbar 
+	
+	healthbar.value = health
+	
+	if health >= max_health:
+		healthbar.visible = false
+	else:
+		healthbar.visible = true
+		
