@@ -37,21 +37,10 @@ func _on_detection_area_body_entered(body):
 
 func _on_detection_area_body_exited(body):
 	player = null
-	player_chase = false
-
-
-#func _on_enemy_hitbox_body_entered(body):
-	#
-	#if body.has_method("player") and body.get_node("player_attackbox"):
-		#player_inattack_zone = true
-#
-#
-#func _on_enemy_hitbox_body_exited(body):
-	#if body.has_method("player") and body.get_node("player_attackbox"):
-		#player_inattack_zone = false
-		
+	player_chase = false	
 		
 func deal_with_damage():
+	#print(Global.player_attackbox_touching_enemy, Global.player_current_attack)
 	if Global.player_attackbox_touching_enemy and Global.player_current_attack == true:
 		if can_take_damage == true:
 			print(can_take_damage, Global.player_attackbox_touching_enemy, Global.player_current_attack)
@@ -61,7 +50,7 @@ func deal_with_damage():
 			Global.player_current_attack = false
 			print("slime health = ", health)
 			if health <= 0:
-				self.queue_free()
+				self.queue_free() # only for demonstration that enemy can die
 
 
 func _on_take_damage_cooldown_timeout():
@@ -69,10 +58,10 @@ func _on_take_damage_cooldown_timeout():
 
 
 func _on_enemy_hitbox_area_entered(area):
-	if area.has_node("attackbox"):
+	if area.has_node("attackbox_side"):
 		Global.player_attackbox_touching_enemy = true
 
 
 func _on_enemy_hitbox_area_exited(area):
-	if area.has_node("attackbox"):
+	if area.has_node("attackbox_side"):
 		Global.player_attackbox_touching_enemy = false

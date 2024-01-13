@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dc70a8gkbrrhf"]
+[gd_scene load_steps=19 format=3 uid="uid://dc70a8gkbrrhf"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_15dwt"]
 [ext_resource type="Texture2D" uid="uid://80hbe1mky43t" path="res://player.png" id="2_50cgh"]
@@ -199,6 +199,9 @@ radius = 13.0384
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjodt"]
 size = Vector2(8, 16)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p4rf8"]
+size = Vector2(20, 10)
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 y_sort_enabled = true
 position = Vector2(94, 117)
@@ -242,12 +245,30 @@ shape = SubResource("CircleShape2D_6frti")
 wait_time = 0.5
 
 [node name="player_attackbox" type="Area2D" parent="."]
+position = Vector2(2, -3)
 
-[node name="attackbox" type="CollisionShape2D" parent="player_attackbox"]
-position = Vector2(70, -5)
+[node name="attackbox_side" type="CollisionShape2D" parent="player_attackbox"]
+position = Vector2(14, 0)
 shape = SubResource("RectangleShape2D_rjodt")
 
+[node name="attackbox_updown" type="CollisionShape2D" parent="player_attackbox"]
+position = Vector2(0, -9)
+shape = SubResource("RectangleShape2D_p4rf8")
+
 [node name="deal_attack_timer" type="Timer" parent="."]
+
+[node name="healthbar" type="ProgressBar" parent="."]
+modulate = Color(0.490196, 0.733333, 0.211765, 1)
+offset_left = -6.0
+offset_top = 6.0
+offset_right = 134.0
+offset_bottom = 33.0
+scale = Vector2(0.1, 0.1)
+show_percentage = false
+
+[node name="regen_timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
 
 [connection signal="body_entered" from="player_hitbox" to="." method="_on_player_hitbox_body_entered"]
 [connection signal="body_exited" from="player_hitbox" to="." method="_on_player_hitbox_body_exited"]
@@ -255,3 +276,4 @@ shape = SubResource("RectangleShape2D_rjodt")
 [connection signal="body_entered" from="player_attackbox" to="." method="_on_player_attackbox_body_entered"]
 [connection signal="body_exited" from="player_attackbox" to="." method="_on_player_attackbox_body_exited"]
 [connection signal="timeout" from="deal_attack_timer" to="." method="_on_deal_attack_timer_timeout"]
+[connection signal="timeout" from="regen_timer" to="." method="_on_regen_timer_timeout"]

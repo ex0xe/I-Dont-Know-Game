@@ -2,8 +2,11 @@ extends CharacterBody2D
 
 var enemy_inattack_range = false
 var enemy_attack_cooldown = true
-var health = 100
+@export var max_health: int = 100
+var health = max_health
 var player_alive = true
+
+
 
 
 
@@ -13,6 +16,9 @@ var player_alive = true
 @onready var animations = $Character/AnimationPlayer
 @onready var sprite = $Character
 @onready var previousDirection: String = "down"
+@onready var attackbox_side = $player_attackbox/attackbox_side
+@onready var attackbox_updown = $player_attackbox/attackbox_updown
+@onready var attackbox = $player_attackbox
 
 var is_attacking = false
 
@@ -23,7 +29,6 @@ var is_attacking = false
 
 func handle_input():
 	var move_direction: Vector2 = Input.get_vector("left", "right", "up", "down")
-	#var target_velocity: Vector2 = move_direction * speed
 	
 	velocity.x = move_toward(velocity.x, speed * move_direction.x, accel)
 	velocity.y = move_toward(velocity.y, speed * move_direction.y, accel)
@@ -48,14 +53,32 @@ func update_animation():
 	var threshold: float = 0.01  # A small threshold to account for minor inaccuracies
 
 	if abs(velocity.x) > threshold and abs(velocity.x) > abs(velocity.y):
-		direction = "side"  # Keep the direction as "right" for both left and right movements
-		sprite.flip_h = velocity.x < 0
+		if velocity.x < 0:
+			#attackbox_updown.disabled = true
+			attackbox.get_node("attackbox_updown").disabled = true
+			attackbox.get_node("attackbox_side").disabled = false
+			direction = "side"  # Keep the direction as "right" for both left and right movements
+			sprite.flip_h = true
+			attackbox.scale.x = -1
+		else:
+			attackbox.get_node("attackbox_updown").disabled = true
+			attackbox.get_node("attackbox_side").disabled = false
+			#attackbox_updown.disabled = true
+			direction = "side"
+			sprite.flip_h = false
+			attackbox.scale.x = 1
 
 	elif abs(velocity.y) > threshold:
 		if velocity.y < 0:
+			attackbox.get_node("attackbox_side").disabled = true
+			attackbox.get_node("attackbox_updown").disabled = false
 			direction = "up"
+			attackbox.scale.y = 1
 		else:
+			attackbox.get_node("attackbox_side").disabled = true
+			attackbox.get_node("attackbox_updown").disabled = false
 			direction = "down"
+			attackbox.scale.y = -1
 	
 	if velocity.length() <= threshold:
 		animations.play("idle_" + previousDirection)
@@ -70,12 +93,13 @@ func _physics_process(delta):
 	handle_input()
 	move_and_slide()
 	update_animation()
+	update_health()
 	
 	if health <= 0:
 		player_alive = false # player dies, reponse needed
 		health = 0
 		print("player has been killed")
-		self.queue_free()
+		self.queue_free() # only for demonstration that player can die
 		
 		
 func player():
@@ -94,7 +118,7 @@ func _on_player_hitbox_body_exited(body):
 		
 func enemy_attack():
 	if enemy_inattack_range and enemy_attack_cooldown == true:
-		health = health - 20
+		health = health - 10
 		enemy_attack_cooldown = false
 		$attack_cooldown.start()
 		print(health)
@@ -109,3 +133,23 @@ func _on_deal_attack_timer_timeout():
 	$deal_attack_timer.stop()
 	Global.player_current_attack = false
 	is_attacking = false
+	
+
+func update_health():
+	var healthbar = $healthbar
+	#print(healthbar.value)
+	healthbar.value = health
+	if health >= 100:
+		healthbar.visible = false
+	else:
+		healthbar.visible = true
+
+
+func _on_regen_timer_timeout():
+	if health < max_health:
+		health = health + 10
+		if health > max_health:
+			health = max_health
+	if health <= 0:
+		health = 0
+	print(health)
