@@ -15,7 +15,7 @@ var player_alive = true
 
 @onready var animations = $Character/AnimationPlayer
 @onready var sprite = $Character
-@onready var previousDirection: String = "down"
+@onready var previousDirection: String = "side"
 @onready var attackbox_side = $player_attackbox/attackbox_side
 @onready var attackbox_updown = $player_attackbox/attackbox_updown
 @onready var attackbox = $player_attackbox
@@ -29,6 +29,10 @@ var is_attacking = false
 #Sprite moves a bit up when walking right or left (noticeable with keyboard)
 #When attacking, only attacking animation will be played, not walking aniamtion
 
+
+func _ready():
+	
+	update_attackbox("right")
 
 func handle_input():
 	var move_direction: Vector2 = Input.get_vector("left", "right", "up", "down")
@@ -46,41 +50,39 @@ func attack():
 	# Add a delay corresponding to the animation length, then set is_attacking back to false
 	await get_tree().create_timer(animations.get_current_animation_length()).timeout
 	is_attacking = false
+	
+func update_attackbox(attack_direction):
+	var is_side_attack = attack_direction in ["left", "right"]
+	attackbox.get_node("attackbox_updown").disabled = is_side_attack
+	attackbox.get_node("attackbox_side").disabled = !is_side_attack
 
-
+# 
 func update_animation():
 	if is_attacking:
 		return
 		
-	var direction = "down"
-	#attackbox.get_node("attackbox_updown").disabled = false
-	#attackbox.get_node("attackbox_side").disabled = true
-	#attackbox.scale.y = -1
+	var direction = "side"
 	var threshold: float = 0.01  # A small threshold to account for minor inaccuracies
 
 	if abs(velocity.x) > threshold and abs(velocity.x) > abs(velocity.y):
 		if velocity.x < 0:
-			attackbox.get_node("attackbox_updown").disabled = true
-			attackbox.get_node("attackbox_side").disabled = false
+			update_attackbox("left")
 			direction = "side"  
 			sprite.flip_h = true
 			attackbox.scale.x = -1
 		else:
-			attackbox.get_node("attackbox_updown").disabled = true
-			attackbox.get_node("attackbox_side").disabled = false
+			update_attackbox("right")
 			direction = "side"
 			sprite.flip_h = false
 			attackbox.scale.x = 1
 
 	elif abs(velocity.y) > threshold:
 		if velocity.y < 0:
-			attackbox.get_node("attackbox_side").disabled = true
-			attackbox.get_node("attackbox_updown").disabled = false
+			update_attackbox("up")
 			direction = "up"
 			attackbox.scale.y = 1
 		else:
-			attackbox.get_node("attackbox_side").disabled = true
-			attackbox.get_node("attackbox_updown").disabled = false
+			update_attackbox("down")
 			direction = "down"
 			attackbox.scale.y = -1
 	
@@ -103,6 +105,7 @@ func _physics_process(delta):
 		player_alive = false # player dies, reponse needed
 		health = 0
 		print("player has been killed")
+		#animations.play("die_side")
 		self.queue_free() # only for demonstration that player can die
 		
 		

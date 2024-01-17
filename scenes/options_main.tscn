@@ -1,3 +1,18 @@
-[gd_scene format=3 uid="uid://c4cksoc5mlb2r"]
+[gd_scene load_steps=2 format=3 uid="uid://c4cksoc5mlb2r"]
 
-[node name="Options_Mainmenu" type="Node2D"]
+[ext_resource type="Script" path="res://scenes/options_main.gd" id="1_t35ko"]
+
+[node name="Options_Mainmenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_t35ko")
+
+[node name="back_main_menu" type="Button" parent="."]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 49.0
+offset_right = 208.0
+offset_bottom = 120.0
+text = "Back to Main Menu"
+
+[connection signal="pressed" from="back_main_menu" to="." method="_on_back_main_menu_pressed"]
