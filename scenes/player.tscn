@@ -215,7 +215,7 @@ texture = ExtResource("2_50cgh")
 offset = Vector2(0, -15)
 hframes = 6
 vframes = 10
-frame = 36
+frame = 54
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Character" groups=["player"]]
 libraries = {

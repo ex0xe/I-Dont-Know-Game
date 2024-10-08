@@ -6,10 +6,6 @@ var enemy_attack_cooldown = true
 var health = max_health
 var player_alive = true
 
-
-
-
-
 @export var speed: float = 300
 @export var accel: float = 30
 
