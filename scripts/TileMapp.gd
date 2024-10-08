@@ -10,4 +10,3 @@ func _on_interact():
 	label_left_right.text = "left or right..."
 	label_left_right_anim.play("FadeOut")
 	
-
